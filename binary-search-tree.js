@@ -140,6 +140,28 @@ class BST {
             if (fetcherParent) fetcherParent.left = null;
         }
     }
+
+    find(value) {
+
+        //tree doesn't exist
+        if (!this.root) return;
+
+        let current = this.root;
+
+        while (current) {
+            if (value === current.data) break; //node found - break out and return
+
+            //traverse tree
+            if (value < current.data) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+
+        //node is either found or null
+        return current;
+    }
 }
 
 //print visualization in console
@@ -150,30 +172,17 @@ function prettyPrint(node, prefix = "", isLeft = true) {
     if (node.left !== null) prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-// let arr = [1, 2, 3, 4, 5, 6, 7];
-let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let arr = [1, 2, 3, 4, 5, 6, 7];
+// let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length-1);
 
-myTree.insert(55);
-myTree.insert(101);
-myTree.insert(-1);
-myTree.insert(9);
-myTree.insert(155);
-myTree.insert(1101);
-myTree.insert(-11);
-myTree.insert(19);
-myTree.insert(525);
-myTree.insert(1201);
-myTree.insert(-21);
-myTree.insert(92);
-myTree.insert(1255);
-myTree.insert(12101);
-myTree.insert(-211);
-myTree.insert(129);
+myTree.deleteItem(4)
 
-myTree.deleteItem(67);
+myTree.insert(4)
+
+console.log(myTree.find(6));
 
 prettyPrint(myTree.root);
