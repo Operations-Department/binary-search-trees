@@ -162,6 +162,22 @@ class BST {
         //node is either found or null
         return current;
     }
+
+    levelOrder(callback) {
+        if (!this.root) return [];
+        let queue = [this.root];
+        let result = [];
+
+        while (queue.length) {
+            const node = queue.shift();
+            if (callback) callback(node);
+            result.push(node.data);
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+
+        return result;
+    }
 }
 
 //print visualization in console
@@ -172,17 +188,20 @@ function prettyPrint(node, prefix = "", isLeft = true) {
     if (node.left !== null) prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-let arr = [1, 2, 3, 4, 5, 6, 7];
-// let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// let arr = [1, 2, 3, 4, 5, 6, 7];
+let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length-1);
 
-myTree.deleteItem(4)
 
-myTree.insert(4)
 
-console.log(myTree.find(6));
+// myTree.deleteItem(4)
+// myTree.insert(4)
 
 prettyPrint(myTree.root);
+
+// console.log(myTree.find(4));
+
+console.log(myTree.levelOrder());
