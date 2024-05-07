@@ -73,71 +73,52 @@ class BST {
         }
     }
 
-    //remove value from tree
     deleteItem(value) {
-
-        //tree doesn't exist
-        if (!this.root) return;
-        
-        //start at root
+        if (!this.root || value === undefined) return;
+    
         let current = this.root;
         let prev = null;
-
-        //traverse down tree recursively
+    
+        //find the node to be deleted
         while (current) {
-            //found value
-            if (current.data === value) break;
-
+            if (value === current.data) break;
             prev = current;
-
-            //haven't found it yet
-            if (value < current.data && current.left) {
-                current = current.left;
-            } else {
-                current = current.right;
-            }
+            if (value < current.data) current = current.left;
+            else current = current.right;
         }
-
+    
+        //if the value is not found
         if (!current) return;
-
-        //case 1: no children
+    
+        //case 1: node to be deleted has no children
         if (!current.left && !current.right) {
-            if (prev) {
-                if (current === prev.left) {
-                    prev.left = null //skip over node
-                } else {
-                    prev.right = null; //skip over node
-                }
-            } else {
-                this.root = null; 
-            }
+            if (!prev) this.root = null; // deleting root node
+            else if (prev.left === current) prev.left = null;
+            else prev.right = null;
         }
-
-        //case 2: one child exists
-        if (current.right && !current.left) prev.right = current.right; //skip over node
-        if (!current.right && current.left) prev.left = current.left; //skip over node
-        
-        //case 3: two children exist 
-        if (current.right && current.left) {
-            //set variables to go get the lowest value from the right subtree
+        //case 2: node to be deleted has only one child
+        else if (!current.left || !current.right) {
+            const child = current.left || current.right;
+            if (!prev) this.root = child; // deleting root node
+            else if (prev.left === current) prev.left = child;
+            else prev.right = child;
+        }
+        //case 3: node to be deleted has two children
+        else {
+            let fetcherParent = current;
             let fetcher = current.right;
-            let fetcherParent = null;
-            
-            //right child doesn't have a left child
-            if (!fetcher.left) { 
-                current.right = fetcher.right;
-            }  
-
-            //recursively go down the left line until the end
+    
             while (fetcher.left) {
                 fetcherParent = fetcher;
                 fetcher = fetcher.left;
-            };
-            
-            //replace the current node with the fetched node
+            }
+    
+            // replace the data of current node with fetcher data
             current.data = fetcher.data;
-            //remove the fetched node from tree
-            if (fetcherParent) fetcherParent.left = null;
+    
+            // delete the fetcher node
+            if (fetcherParent === current) fetcherParent.right = fetcher.right;
+            else fetcherParent.left = fetcher.right;
         }
     }
 
@@ -165,15 +146,22 @@ class BST {
 
     levelOrder(callback) {
         if (!this.root) return [];
-        let queue = [this.root];
+        //initialize queue
+        let q = [this.root];
         let result = [];
 
-        while (queue.length) {
-            const node = queue.shift();
+        while (q.length) {
+            //process first element in queue
+            const node = q.shift();
+            
+            //process optional callback
             if (callback) callback(node);
+
+            //record each element - ensure traversing properly
             result.push(node.data);
-            if (node.left) queue.push(node.left);
-            if (node.right) queue.push(node.right);
+
+            if (node.left) q.push(node.left);
+            if (node.right) q.push(node.right);
         }
 
         return result;
@@ -188,20 +176,17 @@ function prettyPrint(node, prefix = "", isLeft = true) {
     if (node.left !== null) prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-// let arr = [1, 2, 3, 4, 5, 6, 7];
+// let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length-1);
 
-
-
-// myTree.deleteItem(4)
-// myTree.insert(4)
+// myTree.insert(6)
+// myTree.deleteItem(1)
 
 prettyPrint(myTree.root);
 
-// console.log(myTree.find(4));
-
-console.log(myTree.levelOrder());
+// console.log(myTree.find(7));
+// console.log(myTree.levelOrder());
