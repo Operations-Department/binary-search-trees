@@ -153,7 +153,7 @@ class BST {
         while (q.length) {
             //process first element in queue
             const node = q.shift();
-            
+
             //process optional callback
             if (callback) callback(node);
 
@@ -166,6 +166,21 @@ class BST {
 
         return result;
     }
+
+    inOrder(callback) {
+        function traverse(node) {
+            if (!node) return;
+
+            traverse(node.left);
+            if (callback) callback(node);
+            result.push(node.data);
+            traverse(node.right);
+        }
+
+        const result = [];
+        traverse(this.root);
+        return result;
+    }
 }
 
 //print visualization in console
@@ -176,8 +191,8 @@ function prettyPrint(node, prefix = "", isLeft = true) {
     if (node.left !== null) prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-// let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+// let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let myTree = new BST();
 
@@ -188,5 +203,6 @@ myTree.root = myTree.buildTree(arr, 0, arr.length-1);
 
 prettyPrint(myTree.root);
 
-// console.log(myTree.find(7));
-// console.log(myTree.levelOrder());
+console.log(myTree.find(70));
+console.log(myTree.levelOrder());
+console.log(myTree.inOrder());
