@@ -141,6 +141,7 @@ class BST {
     return current;
   }
 
+  //traverse the tree, process the value of each node from top to bottom
   levelOrder(callback) {
     if (!this.root) return [];
     //initialize queue
@@ -164,7 +165,8 @@ class BST {
     return result;
   }
 
-  //traverse the tree and grab the values in order lowest > highest
+  //traverse the tree. process the values in order lowest to highest
+  //node is processed after seccond visit
   inOrder(callback) {
     function traverse(node) {
       if (!node) return;
@@ -180,7 +182,8 @@ class BST {
     return result;
   }
 
-  //traverse the tree processing each value from top to bottom, left to right
+  //traverse the tree processing each value from top to bottom and left to right
+  //node is processed after first visit
   preOrder(callback) {
     function traverse(node) {
         if (!node) return;
@@ -196,6 +199,8 @@ class BST {
     return result;
   }
 
+  //traverse the tree perimeter
+  //node is processed on the third visit
   postOrder(callback) {
     function traverse(node) {
         if (!node) return;
@@ -210,6 +215,23 @@ class BST {
     traverse(this.root);
     return result;
   }
+
+  //find the starting node and counts the edges to the furthest leaf
+  height(node) {
+    node = this.find(node);
+    if (!node) return 0;
+
+    function traverse(node) {
+      if (!node) return -1;
+
+      let leftHeight = traverse(node.left);
+      let rightHeight = traverse(node.right);
+    
+      return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    return traverse(node);
+  }
 }
 
 //print visualization in console
@@ -222,14 +244,14 @@ function prettyPrint(node, prefix = "", isLeft = true) {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 }
 
-let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-// let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length - 1);
 
-// myTree.insert(6)
+// myTree.insert(6);
 // myTree.deleteItem(1)
 
 prettyPrint(myTree.root);
@@ -237,4 +259,6 @@ prettyPrint(myTree.root);
 // console.log(myTree.find(70));
 // console.log(myTree.levelOrder());
 // console.log(myTree.inOrder());
-console.log(myTree.preOrder());
+// console.log(myTree.preOrder());
+// console.log(myTree.postOrder());
+// console.log(myTree.height(8));
