@@ -230,6 +230,7 @@ class BST {
     return traverse(node);
   }
 
+
   depth(node) {
     if (!this.root) return -1;
 
@@ -243,6 +244,18 @@ class BST {
       else current = current.right;
       count++;
     }
+  }
+
+  //work in progress
+  isBalanced() {
+    //returns true if bst is balanced
+  }
+
+  rebalance() {
+    if (!this.root) return -1;
+    let newArr = this.inOrder();
+
+    return this.buildTree(newArr);
   }
 }
 
@@ -281,3 +294,6 @@ prettyPrint(myTree.root);
 // console.log(myTree.postOrder());
 // console.log(myTree.height(8));
 // console.log(myTree.depth(71));
+// console.log(myTree.isBalanced())
+
+prettyPrint(myTree.rebalance());
