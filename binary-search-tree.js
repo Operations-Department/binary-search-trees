@@ -197,7 +197,18 @@ class BST {
   }
 
   postOrder(callback) {
-    //traverse the tree post orderly
+    function traverse(node) {
+        if (!node) return;
+
+        traverse(node.left);
+        traverse(node.right);
+        if (callback) callback(node);
+        result.push(node.data);
+    }
+
+    const result = [];
+    traverse(this.root);
+    return result;
   }
 }
 
