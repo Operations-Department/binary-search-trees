@@ -130,11 +130,8 @@ class BST {
       if (value === current.data) break; //node found - break out and return
 
       //traverse tree
-      if (value < current.data) {
-        current = current.left;
-      } else {
-        current = current.right;
-      }
+      if (value < current.data) current = current.left;
+      else current = current.right;
     }
 
     //node is either found or null
@@ -232,6 +229,21 @@ class BST {
 
     return traverse(node);
   }
+
+  depth(node) {
+    if (!this.root) return -1;
+
+    let current = this.root;
+    let count = 0;
+
+    while (current) {
+      if (node === current.data) return count;
+
+      if (node < current.data) current = current.left;
+      else current = current.right;
+      count++;
+    }
+  }
 }
 
 //print visualization in console
@@ -251,14 +263,21 @@ let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length - 1);
 
-// myTree.insert(6);
+myTree.insert(6);
+myTree.insert(68)
+myTree.insert(69)
+myTree.insert(70)
+myTree.insert(71)
+
+
 // myTree.deleteItem(1)
 
 prettyPrint(myTree.root);
 
-// console.log(myTree.find(70));
+// console.log(myTree.find(67));
 // console.log(myTree.levelOrder());
 // console.log(myTree.inOrder());
 // console.log(myTree.preOrder());
 // console.log(myTree.postOrder());
 // console.log(myTree.height(8));
+// console.log(myTree.depth(71));
