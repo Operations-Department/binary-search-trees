@@ -163,7 +163,7 @@ class BST {
   }
 
   //traverse the tree. process the values in order lowest to highest
-  //node is processed after seccond visit
+  //node is processed after second visit
   inOrder(callback) {
     function traverse(node) {
       if (!node) return;
@@ -200,12 +200,12 @@ class BST {
   //node is processed on the third visit
   postOrder(callback) {
     function traverse(node) {
-        if (!node) return;
+      if (!node) return;
 
-        traverse(node.left);
-        traverse(node.right);
-        if (callback) callback(node);
-        result.push(node.data);
+      traverse(node.left);
+      traverse(node.right);
+      if (callback) callback(node);
+      result.push(node.data);
     }
 
     const result = [];
@@ -213,7 +213,7 @@ class BST {
     return result;
   }
 
-  //find the starting node and counts the edges to the furthest leaf
+  //find the called node and counts the edges to the furthest leaf 
   height(node) {
     node = this.find(node);
     if (!node) return 0;
@@ -230,7 +230,7 @@ class BST {
     return traverse(node);
   }
 
-
+  //returns edge count from called node to root
   depth(node) {
     if (!this.root) return -1;
 
@@ -246,15 +246,29 @@ class BST {
     }
   }
 
-  //work in progress
+  //returns true if balanced, otherwise false
   isBalanced() {
-    //returns true if bst is balanced
-  }
+    const root = this.root;
+    if (root === null) return true;
 
+    function totalHeight(root) {
+      if (root === null) return 0;
+      const leftHeight = totalHeight(root.left);
+      const rightHeight = totalHeight(root.right);
+      return Math.max(leftHeight, rightHeight) + 1;
+    }
+
+    const leftHeight = totalHeight(root.left);
+    const rightHeight = totalHeight(root.right);
+    const heightDiff = Math.abs(leftHeight - rightHeight);
+    if (heightDiff > 1) return false;
+    return this.isBalanced(root.left) && this.isBalanced(root.right);
+  }
+ 
+  //balances an unbalanced tree
   rebalance() {
     if (!this.root) return -1;
     let newArr = this.inOrder();
-
     return this.buildTree(newArr);
   }
 }
@@ -264,7 +278,7 @@ function prettyPrint(node, prefix = "", isLeft = true) {
   if (node === null) return;
   if (node.right !== null)
     prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
   if (node.left !== null)
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 }
@@ -276,16 +290,16 @@ let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length - 1);
 
-myTree.insert(6);
-myTree.insert(68)
-myTree.insert(69)
-myTree.insert(70)
-myTree.insert(71)
-
+myTree.deleteItem(1);
+myTree.deleteItem(3);
+myTree.deleteItem(4);
+myTree.deleteItem(5);
+myTree.deleteItem(7);
 
 // myTree.deleteItem(1)
 
 prettyPrint(myTree.root);
+console.log(myTree.isBalanced());
 
 // console.log(myTree.find(67));
 // console.log(myTree.levelOrder());
@@ -297,3 +311,4 @@ prettyPrint(myTree.root);
 // console.log(myTree.isBalanced())
 
 prettyPrint(myTree.rebalance());
+console.log(myTree.isBalanced());
