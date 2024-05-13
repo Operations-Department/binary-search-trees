@@ -284,28 +284,31 @@ function prettyPrint(node, prefix = "", isLeft = true) {
 }
 
 let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-// let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length - 1);
 
+console.log(myTree.isBalanced()); //true
+
 myTree.deleteItem(10);
-myTree.deleteItem(20);
-myTree.deleteItem(30);
-myTree.deleteItem(40);
+myTree.insert(110);
+myTree.insert(120);
+myTree.insert(130);
+myTree.insert(140);
+myTree.insert(150);
+myTree.insert(160);
 
 prettyPrint(myTree.root);
-console.log(myTree.isBalanced());
+console.log(myTree.isBalanced()); //false
 
-// console.log(myTree.find(67));
-// console.log(myTree.levelOrder());
-// console.log(myTree.inOrder());
-// console.log(myTree.preOrder());
-// console.log(myTree.postOrder());
-// console.log(myTree.height(8));
-// console.log(myTree.depth(71));
-// console.log(myTree.isBalanced())
+console.log(myTree.find(30));     //node{ data: 30, left: null, right: Node {...}}
+console.log(myTree.levelOrder()); //[  50,  20,  80,  30,  60, 90,  40,  70, 100, 110, 120, 130, 140, 150, 160 ]
+console.log(myTree.inOrder());    //[ 20,  30,  40,  50,  60, 70,  80,  90, 100, 110, 120, 130, 140, 150, 160 ]
+console.log(myTree.preOrder());   //[ 50,  20,  30,  40,  80, 60,  70,  90, 100, 110, 120, 130, 140, 150, 160 ]
+console.log(myTree.postOrder());  //[ 40,  30,  20,  70,  60, 160, 150, 140, 130, 120, 110, 100,  90,  80,  50 ]
+console.log(myTree.height(80));   //8
+console.log(myTree.depth(70));    //3
 
 prettyPrint(myTree.rebalance());
-console.log(myTree.isBalanced());
+console.log(myTree.isBalanced()); //true
