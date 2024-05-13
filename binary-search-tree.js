@@ -14,7 +14,8 @@ class BST {
   //create the tree from an array
   buildTree(array) {
     //sort array + filter duplicates
-    array = [...new Set(array)].sort((a, b) => a - b);
+    let arrCopy = array.slice();
+    arrCopy = [...new Set(array)].sort((a, b) => a - b);
 
     // Recursive helper function to build the tree
     function buildTreeHelper(start, end) {
@@ -32,7 +33,7 @@ class BST {
       return root;
     }
 
-    return buildTreeHelper(0, array.length - 1);
+    return buildTreeHelper(0, arrCopy.length - 1);
   }
 
   //add new value/node to tree
@@ -248,7 +249,7 @@ class BST {
 
   //returns true if balanced, otherwise false
   isBalanced() {
-    const root = this.root;
+    let root = this.root;
     if (root === null) return true;
 
     function totalHeight(root) {
@@ -262,14 +263,13 @@ class BST {
     const rightHeight = totalHeight(root.right);
     const heightDiff = Math.abs(leftHeight - rightHeight);
     if (heightDiff > 1) return false;
-    return this.isBalanced(root.left) && this.isBalanced(root.right);
+    return new BST().isBalanced.call({ root: root.left }) && new BST().isBalanced.call({ root: root.right });
   }
  
   //balances an unbalanced tree
   rebalance() {
     if (!this.root) return -1;
-    let newArr = this.inOrder();
-    return this.buildTree(newArr);
+    return this.root = this.buildTree(this.inOrder());
   }
 }
 
@@ -283,20 +283,17 @@ function prettyPrint(node, prefix = "", isLeft = true) {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 }
 
-// let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let arr = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+// let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 
 let myTree = new BST();
 
 myTree.root = myTree.buildTree(arr, 0, arr.length - 1);
 
-myTree.deleteItem(1);
-myTree.deleteItem(3);
-myTree.deleteItem(4);
-myTree.deleteItem(5);
-myTree.deleteItem(7);
-
-// myTree.deleteItem(1)
+myTree.deleteItem(10);
+myTree.deleteItem(20);
+myTree.deleteItem(30);
+myTree.deleteItem(40);
 
 prettyPrint(myTree.root);
 console.log(myTree.isBalanced());
