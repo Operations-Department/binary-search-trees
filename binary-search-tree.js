@@ -72,6 +72,7 @@ class BST {
     }
   }
 
+  //removes the node with the given value while maintaining tree structure and rules
   deleteItem(value) {
     if (!this.root || value === undefined) return;
 
